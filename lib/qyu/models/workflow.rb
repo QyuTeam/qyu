@@ -5,7 +5,7 @@ module Qyu
     attr_reader :id, :name, :descriptor, :created_at, :updated_at
 
     def self.create(name:, descriptor:)
-      validator = Qyu::Utils::WorkflowDescriptorValidatorator.new(descriptor)
+      validator = Qyu::Utils::WorkflowDescriptorValidator.new(descriptor)
       fail Qyu::Errors::WorkflowDescriptorValidatorationError, validator.errors unless validator.valid?
       id = persist(name, descriptor)
       time = Time.try(:zone) ? Time.zone.now : Time.now

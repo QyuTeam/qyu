@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Qyu
+  # Qyu::Config
   class Config
     attr_reader :queue, :store
 

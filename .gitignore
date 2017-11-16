@@ -48,3 +48,9 @@ build-iPhoneSimulator/
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+# rspec failure tracking
+.rspec_status
+
+# byebug history
+.byebug_history

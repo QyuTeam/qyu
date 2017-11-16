@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'qyu'
+require 'qyu/ui'
+
+queue_configuration = {
+  type: :memory
+}
+
+store_configuration = {
+  type: :memory
+}
+
+Qyu.config = Qyu::Config.new(queue: queue_configuration, store: store_configuration)
+Qyu::UI.run!

@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Job #<%= job.id %></h4>
+        <p class="category">
+          Tasks list: <%= total_count %> <%= 'task'.pluralize(total_count) %>
+        </p>
+      </div>
+      <div class="content">
+        <table class="table table-stripped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Queue Name</th>
+              <th>Status</th>
+              <th>Payload</th>
+              <!-- <th>Locked Until</th> -->
+              <!-- <th>Locked By</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <% (tasks[nil] || []).each do |task| %>
+              <%= erb :task_row, locals: { tasks: tasks, task: task, level: 0, root_id: task.id } %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

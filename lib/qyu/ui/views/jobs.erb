@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Jobs</h4>
+        <!-- <p class="category">Last 24 Hours</p> -->
+      </div>
+      <div class="content">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Payload</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% jobs.each do |job| %>
+              <tr>
+                <td>
+                  <a href="<%= url("/jobs/#{job.id}") %>">
+                    <p><%= job.id %></p>
+                    <p>Created: <%= job.created_at %></p>
+                  </a>
+                </td>
+                <td>
+                  <strong>Starts:</strong>
+                  <ul>
+                    <% job.descriptor['starts'].each do |entry_point| %>
+                      <li><%= entry_point %></li>
+                    <% end %>
+                  </ul>
+                  <strong>Tasks:</strong>
+                  <ul>
+                    <% job.descriptor['tasks'].keys.each do |task| %>
+                      <li><%= task %></li>
+                    <% end %>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <% job.payload.each do |key, value| %>
+                      <li><%= key %>: <%= value %></li>
+                    <% end %>
+                  </ul>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <nav aria-label="Page navigation" class="text-center">
+          <%= erb :'helpers/pagination', locals: { collection: jobs } %>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

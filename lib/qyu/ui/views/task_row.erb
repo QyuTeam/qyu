@@ -1,0 +1,26 @@
+<tr data-parent="<%= task.parent_task_id %>"
+    data-level="<%= level %>"
+    data-root="<%= root_id %>"
+    class="<%= 'collapse' if level > 0 %>">
+  <td>
+    <%= raw_html("•&nbsp;&nbsp;" * level) if level > 0  %>
+    <% if tasks[task.id] %>
+      <a href="#" class="collapser"
+         data-id="<%= task.id %>"
+         data-level="<%= level %>"
+         data-root="<%= root_id %>">
+        <%= task.name %>
+      </a>
+    <% else %>
+      <%= task.name %>
+    <% end %>
+  </td>
+  <td><%= task.queue_name %></td>
+  <td><%= task.status.status %></td>
+  <td><%= task.payload %></td>
+  <!-- <td><%# task.locked_until %></td> -->
+  <!-- <td><%# task.locked_by %></td> -->
+</tr>
+<% (tasks[task.id] || []).each do |t| %>
+  <%= erb :task_row, locals: { tasks: tasks, task: t, level: level + 1, root_id: root_id } %>
+<% end %>

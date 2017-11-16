@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Qyu Dashboard</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Bootstrap core CSS     -->
+    <link rel="stylesheet" type="text/css" href="<%= url("/bootstrap.min.css")%>">
+    <!--  Paper Dashboard core CSS    -->
+    <link rel="stylesheet" type="text/css" href="<%= url("/paper-dashboard.css")%>">
+    <!--  custom CSS    -->
+    <link rel="stylesheet" type="text/css" href="<%= url("/style.css")%>">
+  </head>
+  <body>
+    <div class="wrapper">
+      <% #erb :sidebar %>
+      <div class="main-panel">
+        <%= erb :navbar %>
+        <div class="content">
+          <div class="container-fluid">
+            <%= yield %>
+          </div>
+        </div>
+        <%= erb :footer %>
+      </div>
+    </div>
+    <script src="<%= url("/script.js")%>"></script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <% if collection.page > 1 %>
+      <li>
+        <a href="<%= url("/jobs?page=1") %>">
+          &#8672; First
+        </a>
+      </li>
+      <li>
+        <a href="<%= url("/jobs?page=#{collection.page - 1}") %>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    <% end %>
+
+    <% previous_pages_for(collection).each do |page_num| %>
+      <li>
+        <a href="<%= url("/jobs?page=#{page_num}") %>">
+          <%= page_num %>
+        </a>
+      </li>
+    <% end %>
+    <li class="active">
+      <a href="#">
+        <%= collection.page %> <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    <% next_pages_for(collection).each do |page_num| %>
+      <li>
+        <a href="<%= url("/jobs?page=#{page_num}") %>">
+          <%= page_num %>
+        </a>
+      </li>
+    <% end %>
+
+    <% if collection.total_pages > collection.page %>
+      <li>
+        <a href="<%= url("/jobs?page=#{collection.page + 1}") %>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      <li>
+        <a href="<%= url("/jobs?page=#{collection.total_pages}" ) %>">
+          Last &#8674;
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</nav>

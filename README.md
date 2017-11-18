@@ -38,7 +38,7 @@ Qyu.configure(
 )
 ```
 
-The memory queue and store is just for testing purposes. For production; use on of the following:
+The memory queue and store is just for testing purposes. For production; use one of the following:
 
 #### Stores
 *ActiveRecord:* https://github.com/FindHotel/qyu-store-activerecord    

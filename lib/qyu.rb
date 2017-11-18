@@ -20,7 +20,7 @@ module Qyu
         queue: queue,
         store: store
       )
-      self.logger = logger || default_logger
+      self.logger = logger || default_logger unless defined?(@@__logger)
       self.test_connections
     end
 

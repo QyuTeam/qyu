@@ -6,8 +6,8 @@ require "qyu/version"
 Gem::Specification.new do |spec|
   spec.name                  = "qyu"
   spec.version               = Qyu::VERSION
-  spec.authors               = ["Mohamed Osama"]
-  spec.email                 = ["mohamed.o.alnagdy@gmail.com"]
+  spec.authors               = ['Elod Peter', 'Mohamed Osama']
+  spec.email                 = ['bejmuller@gmail.com', 'mohamed.o.alnagdy@gmail.com']
 
   spec.summary               = 'Distributed task execution system for complex workflows'
   spec.description           = 'Distributed task execution system for complex workflows'

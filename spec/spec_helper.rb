@@ -22,8 +22,8 @@ RSpec.configure do |config|
     Qyu.__send__(:remove_class_variable, :@@__config) if Qyu.class_variable_defined?(:@@__config)
     Qyu.__send__(:remove_class_variable, :@@__queue) if Qyu.class_variable_defined?(:@@__queue)
     Qyu.__send__(:remove_class_variable, :@@__store) if Qyu.class_variable_defined?(:@@__store)
-    sc = defined?(store_config) ? byebug && store_config : { type: :memory, lease_period: 60 }
+    sc = defined?(store_config) ? store_config : { type: :memory, lease_period: 60 }
     qc = defined?(queue_config) ? queue_config : { type: :memory }
-    Qyu.config = Qyu::Config.new(queue: qc, store: sc)
+    Qyu.configure(queue: qc, store: sc)
   end
 end

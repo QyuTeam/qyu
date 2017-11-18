@@ -15,11 +15,12 @@ require 'qyu/workers'
 
 module Qyu
   class << self
-    def config=(config)
-      fail 'Can not re-define configuration' if defined?(@@__config)
-      fail 'Invalid configuration' unless config.is_a?(Qyu::Config)
-
-      @@__config = config
+    def configure(queue:, store:)
+      self.config = Qyu::Config.new(
+        queue: queue,
+        store: store
+      )
+      test_connections
     end
 
     def config
@@ -27,6 +28,7 @@ module Qyu
 
       @@__config
     end
+    alias configuration config
 
     def configured?
       defined?(@@__config)
@@ -54,6 +56,13 @@ module Qyu
     end
 
     private
+
+    def config=(config)
+      fail 'Can not re-define configuration' if configured?
+      fail 'Invalid configuration' unless config.is_a?(Qyu::Config)
+
+      @@__config = config
+    end
 
     def default_logger
       logger = Logger.new(STDOUT)

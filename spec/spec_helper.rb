@@ -5,6 +5,7 @@ require 'pry-byebug'
 require 'simplecov'
 require 'qyu'
 
+Qyu.logger.level = Logger::FATAL
 SimpleCov.start
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

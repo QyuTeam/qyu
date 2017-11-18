@@ -81,7 +81,7 @@ module Qyu
             return @queues[name]
           end
           Qyu.logger.info "Could not find queue `#{name}`, creating it"
-          @queues[name] ||= Queue.new
+          @queues[name] ||= ::Queue.new
         end
         alias get_or_create_queue queue
       end

@@ -7,7 +7,7 @@ module Qyu
     def self.create(workflow:, payload:)
       workflow = Workflow.find_by(name: workflow) if workflow.is_a?(String)
       id = persist(workflow, payload)
-      time = Time.try(:zone) ? Time.zone.now : Time.now
+      time = Time.now
       new(id, workflow, payload, time, time)
     end
 
@@ -65,13 +65,14 @@ module Qyu
     def create_task(parent_task, task_name, payload)
       parent_task_id = parent_task.nil? ? nil : parent_task.id
       Qyu.logger.debug "Task (ID=#{parent_task_id}) created a new task"
-
-      Qyu::Task.create(queue_name(task_name), {
-                           'name' => task_name,
-                           'parent_task_id' => parent_task_id,
-                           'job_id' => id,
-                           'payload' => task_payload(payload, task_name)
-                         })
+      Qyu::Task.create(
+        queue_name: queue_name(task_name),
+        attributes: {
+                      'name' => task_name,
+                      'parent_task_id' => parent_task_id,
+                      'job_id' => id,
+                      'payload' => task_payload(payload, task_name)
+                    })
     end
 
     def create_next_tasks(parent_task, payload)

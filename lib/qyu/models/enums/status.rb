@@ -8,6 +8,10 @@ module Qyu
     FAILED          = 'failed'
     INVALID_PAYLOAD = 'invalid_payload'
 
+    def self.find(id)
+      Qyu.store.find_task(@id)
+    end
+
     def initialize(id)
       @id = id
     end

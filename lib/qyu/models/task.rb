@@ -27,7 +27,7 @@ module Qyu
     # When we restart the job, the tasks will be recreated. If a task has already existed,
     # and completed, then that state will be unchanged, and when the worker picks it up,
     # will notice the completed state, acknowledge the message, and continue the next steps.
-    def self.create(queue_name, attributes)
+    def self.create(queue_name: nil, attributes: nil)
       fail Qyu::Errors::InvalidTaskAttributes unless valid_attributes?(attributes)
       fail Qyu::Errors::InvalidQueueName unless valid_queue_name?(queue_name)
       Qyu.logger.debug "find_or_persist queue_name=#{queue_name} and attributes=#{attributes}"
@@ -74,7 +74,7 @@ module Qyu
     end
 
     def acknowledgeable?
-      @status.completed? || @status.payload_invalid?
+      @status.completed? || @status.invalid_payload?
     end
 
     def completed?
@@ -131,7 +131,7 @@ module Qyu
       Qyu.logger.debug "Task with ID=#{id} marked failed."
     end
 
-    def mark_payload_invalid
+    def mark_invalid_payload
       Qyu.store.update_status(id, Status::INVALID_PAYLOAD)
       Qyu.logger.debug "Task with ID=#{id} has invalid payload."
     end

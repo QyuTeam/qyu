@@ -15,12 +15,13 @@ require 'qyu/workers'
 
 module Qyu
   class << self
-    def configure(queue:, store:)
+    def configure(queue:, store:, logger: nil)
       self.config = Qyu::Config.new(
         queue: queue,
         store: store
       )
-      test_connections
+      self.logger = logger || default_logger
+      self.test_connections
     end
 
     def config

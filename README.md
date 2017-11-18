@@ -32,7 +32,9 @@ Qyu.configure(
   store: {
     type: :memory,
     lease_period: 60
-  }
+  },
+  # optional Defaults to STDOUT
+  logger: Logger.new(STDOUT)
 )
 ```
 
@@ -43,8 +45,8 @@ The memory queue and store is just for testing purposes. For production; use on 
 *Redis:* https://github.com/FindHotel/qyu-store-redis
 
 #### Queues
-*Amazon SQS:* https://github.com/FindHotel/qyu-queue-sqs
-https://github.com/FindHotel/qyu-queue-redis
+*Amazon SQS:* https://github.com/FindHotel/qyu-queue-sqs    
+*Redis:* https://github.com/FindHotel/qyu-queue-redis
 
 ## Glossary
 

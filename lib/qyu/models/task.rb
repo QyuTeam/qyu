@@ -15,9 +15,9 @@ module Qyu
 
     # @returns Task
     # by defintion Task.create does 2 things:
-    # - persists the Task in the StateStore
-    # - enqueues the Task to the MessageQueue
-    # We have to make sure that a Task is unique in the StateStore. Because of this
+    # - persists the Task in the Store
+    # - enqueues the Task to the Queue
+    # We have to make sure that a Task is unique in the Store. Because of this
     # create first looks up if the task has already been persisted. If it exists then
     # there is no need to persist it again, only to enqueue it.
     # Double (or multiple) delivery of messages is allowed and handled at worker level.
@@ -39,7 +39,7 @@ module Qyu
         attributes['parent_task_id']
       ) do |t_id|
         Qyu.logger.debug "enqueue queue_name=#{queue_name} and task_id=#{t_id}"
-        Qyu.message_queue.enqueue_task(queue_name, t_id)
+        Qyu.queue.enqueue_task(queue_name, t_id)
       end
 
       new(task_id, attributes, queue_name)
@@ -49,7 +49,7 @@ module Qyu
     def self.fetch(queue_name)
       fail Qyu::Errors::InvalidQueueName unless valid_queue_name?(queue_name)
       begin
-        message    = Qyu.message_queue.fetch_next_message(queue_name)
+        message    = Qyu.queue.fetch_next_message(queue_name)
         task_id    = message['task_id']
         task_attrs = Qyu.store.find_task(task_id)
       rescue => ex
@@ -143,20 +143,20 @@ module Qyu
 
     def self.acknowledge_message(queue_name, message_id)
       Qyu.logger.debug "Acknowledging message with ID=#{message_id} from queue `#{queue_name}`"
-      Qyu.message_queue.acknowledge_message(queue_name, message_id)
+      Qyu.queue.acknowledge_message(queue_name, message_id)
     end
 
-    def re_enqueue
-      # For SQS FIFO queues (future use)
+    def requeue
+      # TODO For FIFO queues (future use)
       fail Qyu::Errors::MessageNotReceived if message_id.nil?
       self.class.acknowledge_message(queue_name, message_id)
-      self.class.re_enqueue(queue_name, id, message_id)
+      self.class.requeue(queue_name, id, message_id)
     end
 
-    def self.re_enqueue(queue_name, id, message_id)
-      # For SQS FIFO queues (future use)
+    def self.requeue(queue_name, id, message_id)
+      # TODO For FIFO queues (future use)
       Qyu.logger.debug "Re-enqueuing message with ID=#{message_id} in queue `#{queue_name}`"
-      Qyu.message_queue.enqueue_task(queue_name, id)
+      Qyu.queue.enqueue_task(queue_name, id)
     end
 
     def enqueue_in_failure_queue
@@ -167,7 +167,7 @@ module Qyu
 
     def self.enqueue_in_failure_queue(queue_name, id, message_id)
       Qyu.logger.debug "Enqueuing failed message with ID=#{message_id} in #{queue_name} failures queue"
-      Qyu.message_queue.enqueue_task_to_failed_queue(queue_name, id)
+      Qyu.queue.enqueue_task_to_failed_queue(queue_name, id)
     end
 
     def job

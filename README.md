@@ -22,6 +22,30 @@ Or install it yourself as:
 
     $ gem install qyu
 
+## Configuration
+To start using Qyu; you need a queue configuration and a state store configuration. Here's an example:
+```ruby
+Qyu.configure(
+  queue: {
+    type: :memory
+  },
+  store: {
+    type: :memory,
+    lease_period: 60
+  }
+)
+```
+
+The memory queue and store is just for testing purposes. For production; use on of the following:
+
+#### Stores
+*ActiveRecord:* https://github.com/FindHotel/qyu-store-activerecord    
+*Redis:* https://github.com/FindHotel/qyu-store-redis
+
+#### Queues
+*Amazon SQS:* https://github.com/FindHotel/qyu-queue-sqs
+https://github.com/FindHotel/qyu-queue-redis
+
 ## Glossary
 
 #### Workflow

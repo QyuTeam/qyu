@@ -54,7 +54,7 @@ module Qyu
         task_attrs = Qyu.store.find_task(task_id)
       rescue => ex
         message ||= {}
-        raise Qyu::Errors::TaskCannotBeFetched.new(queue_name, message['id'], message['task_id'], ex)
+        raise Qyu::Errors::CouldNotFetchTask.new(queue_name, message['id'], message['task_id'], ex)
       end
       new(task_id, task_attrs, queue_name, message['id'])
     end

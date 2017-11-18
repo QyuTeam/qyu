@@ -23,7 +23,7 @@ module Qyu
       offset = (page - 1) * limit
 
       jobs = PaginatableArray.new(
-        Qyu::Job.select(limit, offset, :desc),
+        Qyu::Job.select(limit: limit, offset: offset, order: :desc),
         limit: limit, offset: offset, total_count: Qyu::Job.count,
         page: page
       )

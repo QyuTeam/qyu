@@ -2,9 +2,9 @@
 
 module Qyu
   module Errors
-    # Qyu::Errors::TaskCannotBeFetched
+    # Qyu::Errors::CouldNotFetchTask
     # TODO: rethink this...
-    class TaskCannotBeFetched < Base
+    class CouldNotFetchTask < Base
       attr_reader :original_error, :queue_name, :message_id, :task_id
       def initialize(queue_name, message_id, task_id, original_error)
         super("Task cannot be fetched from queue=#{queue_name} with message_id=#{message_id} task_id=#{task_id}.")

@@ -5,6 +5,7 @@ module Qyu
     attr_reader :descriptor, :payload, :id, :created_at, :updated_at
 
     def self.create(workflow:, payload:)
+      workflow = Workflow.find_by(name: workflow) if workflow.is_a?(String)
       id = persist(workflow, payload)
       time = Time.try(:zone) ? Time.zone.now : Time.now
       new(id, workflow, payload, time, time)
@@ -16,7 +17,7 @@ module Qyu
           job_attrs['created_at'], job_attrs['updated_at'])
     end
 
-    def self.select(limit = 30, offset = 0, order = :asc)
+    def self.select(limit: 30, offset: 0, order: :asc)
       job_records = Qyu.store.select_jobs(limit, offset, order)
       job_records.map do |record|
         new(record['id'], record['workflow'], record['payload'],
@@ -26,6 +27,14 @@ module Qyu
 
     def self.count
       Qyu.store.count_jobs
+    end
+
+    def self.delete(id)
+      Qyu.store.delete_job(id)
+    end
+
+    def self.clear_completed
+      Qyu.store.clear_completed_jobs
     end
 
     def start

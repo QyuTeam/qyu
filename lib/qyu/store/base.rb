@@ -10,11 +10,59 @@ module Qyu
         fail Qyu::Errors::NotImplementedError
       end
 
-      def find_or_persist_task(_name, _payload, _job_id, _parent_task_id)
+      def transaction
         fail Qyu::Errors::NotImplementedError
       end
 
+      ## Workflow
+      def persist_workflow(name, descriptor)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def find_workflow(_id)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def find_workflow_by_name(_name)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def delete_workflow(_id)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def delete_workflow_by_name(name)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      ## Job
       def persist_job(_workflow, _payload)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def find_job(_id)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def select_jobs(_limit, _offset, _order = :asc)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def count_jobs
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def delete_job(_id)
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def clear_completed_jobs
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      ## Task
+
+      def find_or_persist_task(_name, _payload, _job_id, _parent_task_id)
         fail Qyu::Errors::NotImplementedError
       end
 
@@ -27,18 +75,6 @@ module Qyu
       end
 
       def find_task_ids_by_job_id_name_and_parent_task_ids(_job_id, _name, _parent_task_ids)
-        fail Qyu::Errors::NotImplementedError
-      end
-
-      def find_workflow(_id)
-        fail Qyu::Errors::NotImplementedError
-      end
-
-      def find_workflow_by_name(_name)
-        fail Qyu::Errors::NotImplementedError
-      end
-
-      def find_job(_id)
         fail Qyu::Errors::NotImplementedError
       end
 
@@ -58,19 +94,7 @@ module Qyu
         fail Qyu::Errors::NotImplementedError
       end
 
-      def transaction
-        fail Qyu::Errors::NotImplementedError
-      end
-
       def select_tasks_by_job_id
-        fail Qyu::Errors::NotImplementedError
-      end
-
-      def select_jobs(_limit, _offset, _order = :asc)
-        fail Qyu::Errors::NotImplementedError
-      end
-
-      def count_jobs
         fail Qyu::Errors::NotImplementedError
       end
     end

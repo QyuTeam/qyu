@@ -40,7 +40,7 @@ module Qyu
             rescue Qyu::Errors::CouldNotFetchTask => ex
               acknowledge_message_with_task_id_not_found_in_store(ex)
             rescue Qyu::Errors::PayloadValidationError
-              fetched_task.mark_payload_invalid
+              fetched_task.mark_invalid_payload
             rescue => ex
               log("Worker error: #{ex.class}: #{ex.message}")
               log("Backtrace: #{ex.backtrace.join("\n")}")

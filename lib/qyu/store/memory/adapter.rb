@@ -101,7 +101,7 @@ module Qyu
             'name' => name,
             'queue_name' => queue_name,
             'parent_task_id' => parent_task_id,
-            'status' => Qyu::Task::Status::QUEUED,
+            'status' => Qyu::Status::QUEUED,
             'payload' => payload,
             'job_id' => job_id
           }

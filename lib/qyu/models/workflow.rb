@@ -9,7 +9,7 @@ module Qyu
         validator = Qyu::Concerns::WorkflowDescriptorValidator.new(descriptor)
         fail Qyu::Errors::WorkflowDescriptorValidatorationError, validator.errors unless validator.valid?
         id = persist(name, descriptor)
-        time = Time.try(:zone) ? Time.zone.now : Time.now
+        time = Time.now
         new(id, name, descriptor, time, time)
       end
 

@@ -19,6 +19,73 @@ module Qyu
           true
         end
 
+        def find_workflow(id)
+          @worflows[id]
+        end
+
+        def find_workflow_by_name(name)
+          @worflows.detect do |_id, wflow|
+            wflow['name'] == name
+          end.last
+        end
+
+        def persist_workflow(name, descriptor)
+          id = Qyu::Utils.uuid
+          @workflows[id] = {
+            'id'         => id,
+            'name'       => name,
+            'descriptor' => descriptor
+          }
+          id
+        end
+
+        def delete_workflow(id)
+          @workflows.delete(id)
+        end
+
+        def delete_workflow_by_name(name)
+          workflow = find_workflow_by_name(name)
+          return unless workflow
+          delete_workflow(workflow['id'])
+        end
+
+        def find_job(id)
+          @jobs[id]
+        end
+
+        def select_jobs(limit, offset, order = :asc)
+          ids = @jobs.keys[offset, limit]
+          selected = ids.map { |id| { id: id }.merge(@jobs[id]) }
+          return selected if order == :asc
+          selected.reverse
+        end
+
+        def persist_job(workflow, payload)
+          id = Qyu::Utils.uuid
+          @jobs[id] = {
+            'payload'  => payload,
+            'workflow' => workflow
+          }
+          id
+        end
+
+        def delete_job(id)
+          @jobs.delete(id)
+        end
+
+        def clear_completed_jobs
+          # TODO
+        end
+
+        def count_jobs
+          @jobs.count
+        end
+
+        ## Task methods
+        def find_task(id)
+          @tasks[id]
+        end
+
         def find_or_persist_task(name, queue_name, payload, job_id, parent_task_id)
           matching_task = @tasks.detect do |_id, attrs|
             attrs['job_id'] == job_id \
@@ -42,63 +109,22 @@ module Qyu
           id
         end
 
-        def persist_workflow(name, descriptor)
-          id = Qyu::Utils.uuid
-          @workflows[id] = {
-            'name'       => name,
-            'descriptor' => descriptor
-          }
-          id
-        end
-
-        def persist_job(workflow, payload)
-          id = Qyu::Utils.uuid
-          @jobs[id] = {
-            'payload'  => payload,
-            'workflow' => workflow
-          }
-          id
-        end
-
-        def find_task(id)
-          @tasks[id]
-        end
-
         def find_task_ids_by_job_id_and_name(job_id, name)
-          @tasks.select { |_id, attrs| attrs['job_id'] == job_id && attrs['name'] == name }.map { |(id, _attr)| id }
+          @tasks.select do |_id, attrs|
+            attrs['job_id'] == job_id && attrs['name'] == name
+          end.map { |(id, _attr)| id }
         end
 
         def find_task_ids_by_job_id_name_and_parent_task_ids(job_id, name, parent_task_ids)
-          @tasks.select { |_id, attrs| attrs['job_id'] == job_id && attrs['name'] == name && parent_task_ids.include?(attrs['parent_task_id']) }.map { |(id, _attr)| id }
+          @tasks.select do |_id, attrs|
+            attrs['job_id'] == job_id &&
+            attrs['name'] == name &&
+            parent_task_ids.include?(attrs['parent_task_id'])
+          end.map { |(id, _attr)| id }
         end
 
         def select_tasks_by_job_id(job_id)
           @tasks.select { |_id, attrs| attrs['job_id'] == job_id }.map { |id, attrs| attrs.merge('id' => id) }
-        end
-
-        def find_workflow(id)
-          @worflows[id]
-        end
-
-        def find_workflow_by_name(name)
-          @worflows.detect do |_id, wflow|
-            wflow['name'] == name
-          end.last
-        end
-
-        def find_job(id)
-          @jobs[id]
-        end
-
-        def select_jobs(limit, offset, order = :asc)
-          ids = @jobs.keys[offset, limit]
-          selected = ids.map { |id| { id: id }.merge(@jobs[id]) }
-          return selected if order == :asc
-          selected.reverse
-        end
-
-        def count_jobs
-          @jobs.count
         end
 
         def lock_task!(id, lease_time)

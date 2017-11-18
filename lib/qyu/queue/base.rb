@@ -33,6 +33,14 @@ module Qyu
       def acknowledge_message(_queue_name, _message_id)
         fail Qyu::Errors::NotImplementedError
       end
+
+      def queues
+        fail Qyu::Errors::NotImplementedError
+      end
+
+      def size(_queue_name)
+        fail Qyu::Errors::NotImplementedError
+      end
     end
   end
 end

@@ -48,6 +48,16 @@ module Qyu
           @temp_store[message_id] = true
         end
 
+        def queues
+          @queues.map do |name, queue|
+            { name: name, messages: queue&.size }
+          end
+        end
+
+        def size(queue_name)
+          queue(queue_name).size
+        end
+
         private
 
         def schedule_requeue(message, message_id, queue_name)
@@ -73,6 +83,7 @@ module Qyu
           Qyu.logger.info "Could not find queue `#{name}`, creating it"
           @queues[name] ||= Queue.new
         end
+        alias get_or_create_queue queue
       end
     end
   end

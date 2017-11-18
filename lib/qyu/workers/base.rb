@@ -37,7 +37,7 @@ module Qyu
                   fail_task(fetched_task, ex)
                 end
               end
-            rescue Qyu::Errors::TaskCannotBeFetched => ex
+            rescue Qyu::Errors::CouldNotFetchTask => ex
               acknowledge_message_with_task_id_not_found_in_store(ex)
             rescue Qyu::Errors::PayloadValidationError
               fetched_task.mark_payload_invalid

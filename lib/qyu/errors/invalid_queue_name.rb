@@ -5,7 +5,7 @@ module Qyu
     # Qyu::Errors::InvalidQueueName
     class InvalidQueueName < Base
       def initialize
-        super('Invalid queue name.')
+        super('Queue name is invalid.')
       end
     end
   end

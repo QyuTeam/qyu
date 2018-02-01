@@ -37,6 +37,7 @@ module Qyu
                   fail_task(fetched_task, ex)
                 end
               end
+            rescue Qyu::Errors::UnsyncError
             rescue Qyu::Errors::CouldNotFetchTask => ex
               acknowledge_message_with_task_id_not_found_in_store(ex)
             rescue Qyu::Errors::PayloadValidationError
@@ -79,8 +80,10 @@ module Qyu
       end
 
       def fail_task(fetched_task, exception)
-        log("Worker error: #{exception.class}: #{exception.message}")
-        log("Backtrace: #{exception.backtrace.join("\n")}")
+        unless exception.class == Qyu::Errors::UnsyncError
+          log("Worker error: #{exception.class}: #{exception.message}")
+          log("Backtrace: #{exception.backtrace.join("\n")}")
+        end
         Qyu.store.transaction do
           fetched_task.enqueue_in_failure_queue if @failure_queue
           fetched_task.unlock!

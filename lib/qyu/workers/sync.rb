@@ -32,7 +32,7 @@ module Qyu
 
         if task_ids.size < sync_param_value
           log(:debug, 'Re-enqueuing sync task')
-          fail 'Not all tasks have been started yet'
+          fail Qyu::Errors::UnsyncError
         end
 
         check_completion!(task_ids)
@@ -45,7 +45,7 @@ module Qyu
         log(:debug, "Task: #{task_name_to_wait_for}, Task IDs: #{task_ids}")
         if task_ids.empty?
           log(:debug, 'Re-enqueuing sync task')
-          fail 'Not all tasks have been started yet'
+          fail Qyu::Errors::UnsyncError
         end
         check_completion!(task_ids)
       end
@@ -54,7 +54,8 @@ module Qyu
         task_ids.each do |task_id|
           state = Qyu::Status.find(task_id)
           log(:debug, "[CHECK_COMPLETION] Task ID: #{task_id}, Status: #{state.status}")
-          fail 'Not all tasks have finished yet, requeuing sync task...' unless state.completed?
+          next if state.completed?
+          fail Qyu::Errors::UnsyncError
         end
       end
     end

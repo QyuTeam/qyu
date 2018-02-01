@@ -145,7 +145,7 @@ module Qyu
     end
 
     def self.persist(workflow, payload)
-      workflow = Qyu::Workflow.find_by_name(workflow) if workflow.is_a?(String)
+      workflow = Qyu::Workflow.find_by(name: workflow) if workflow.is_a?(String)
       Qyu.store.persist_job(workflow, payload)
     end
 

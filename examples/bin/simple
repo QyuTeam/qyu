@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../simple/create_workflow'
+require_relative '../simple/enqueue_job'
+require_relative '../simple/worker'
+
+SimpleWorker.new.run

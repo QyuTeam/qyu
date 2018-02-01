@@ -45,7 +45,7 @@ module Qyu
 
       def delete_by(name: nil, id: nil)
         raise ArgumentError, 'specify either name or id' if (name && id) || (name.nil? && id.nil?)
-        Qyu.store.delete_workflow_by_name(id) if name
+        Qyu.store.delete_workflow_by_name(name) if name
         delete(id) if id
       end
 

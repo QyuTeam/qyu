@@ -20,6 +20,8 @@ module Qyu
         log(:info, "Worker started for queue '#{queue_name}'")
         repeat = true
 
+        remaining_fetch_retries = 3
+
         while repeat
           run_callbacks(:execute) do
             begin
@@ -38,7 +40,13 @@ module Qyu
                 end
               end
             rescue Qyu::Errors::CouldNotFetchTask => ex
-              acknowledge_message_with_task_id_not_found_in_store(ex)
+              if remaining_fetch_retries <= 0
+                acknowledge_message_with_task_id_not_found_in_store(ex)
+              else
+                sleep(remaining_fetch_retries)
+                remaining_fetch_retries -= 1
+                retry
+              end
             rescue Qyu::Errors::PayloadValidationError
               fetched_task.mark_invalid_payload
             rescue => ex

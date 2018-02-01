@@ -20,11 +20,11 @@ module Qyu
         end
 
         def find_workflow(id)
-          @worflows[id]
+          @workflows[id]
         end
 
         def find_workflow_by_name(name)
-          @worflows.detect do |_id, wflow|
+          @workflows.detect do |_id, wflow|
             wflow['name'] == name
           end.last
         end

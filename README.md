@@ -38,6 +38,10 @@ Qyu.configure(
 )
 ```
 
+## Usage
+TODO: Write usage instructions here
+
+## Plugins
 The memory queue and store is just for testing purposes. For production; use one of the following:
 
 #### Stores
@@ -74,10 +78,6 @@ A worker is sitting on a queue, waiting for something.
 
 #### Sync Worker
 A worker waiting for other workers to finish
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 

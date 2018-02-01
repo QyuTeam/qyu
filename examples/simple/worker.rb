@@ -6,11 +6,11 @@ class SimpleWorker
   def initialize
     @worker = Qyu::Worker.new do
       callback :execute, :before do
-        puts 'Starting'
+        Qyu.logger.info 'Waiting for task..'
       end
 
       callback :execute, :after do
-        puts 'Done'
+        Qyu.logger.info 'Done'
       end
 
       # Payload validation
@@ -22,11 +22,11 @@ class SimpleWorker
     # Consumes message from print-hello queue
     @worker.work('print-hello') do |task|
       task.payload['times'].times do |i|
-        puts "#{i}. Hello"
+        Qyu.logger.info "#{i + 1}. Hello"
       end
     rescue StandardError => ex
-      puts 'OMG :('
-      puts ex.message
+      Qyu.logger.error 'OMG :('
+      Qyu.logger.error ex.message
     end
   end
 end

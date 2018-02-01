@@ -5,6 +5,8 @@ require 'bundler/setup'
 Bundler.setup
 
 require 'qyu'
+logger = Logger.new(STDOUT)
+logger.level = :info
 
 Qyu.configure(
   queue: {
@@ -14,7 +16,7 @@ Qyu.configure(
     type: :memory,
     lease_period: 60
   },
-  logger: Logger.new(STDOUT)
+  logger: logger
 )
 
 Qyu.test_connections

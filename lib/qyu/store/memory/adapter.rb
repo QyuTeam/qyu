@@ -127,6 +127,11 @@ module Qyu
           @tasks.select { |_id, attrs| attrs['job_id'] == job_id }.map { |id, attrs| attrs.merge('id' => id) }
         end
 
+        def task_status_counts(job_id)
+          # TODO
+          {}
+        end
+
         def lock_task!(id, lease_time)
           uuid = Qyu::Utils.uuid
           locked = false

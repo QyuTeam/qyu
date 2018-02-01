@@ -101,6 +101,10 @@ module Qyu
       def select_tasks_by_job_id
         fail Qyu::Errors::NotImplementedError
       end
+
+      def task_status_counts(_id)
+        fail Qyu::Errors::NotImplementedError
+      end
     end
   end
 end

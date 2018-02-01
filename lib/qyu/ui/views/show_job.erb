@@ -11,6 +11,30 @@
         <table class="table table-stripped">
           <thead>
             <tr>
+              <th>Task Name</th>
+              <th>Queued</th>
+              <th>Working</th>
+              <th>Completed</th>
+              <th>Failed</th>
+              <th>Invalid Payload</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% task_statuses.each do |task_name, statuses| %>
+              <tr>
+                <td><%= task_name %></td>
+                <td><%= statuses['queued'] %></td>
+                <td><%= statuses['working'] %></td>
+                <td><%= statuses['completed'] %></td>
+                <td><%= statuses['failed'] %></td>
+                <td><%= statuses['invalid_payload'] %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <table class="table table-stripped">
+          <thead>
+            <tr>
               <th>Name</th>
               <th>Queue Name</th>
               <th>Status</th>

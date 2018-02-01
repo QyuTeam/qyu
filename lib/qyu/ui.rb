@@ -35,8 +35,16 @@ module Qyu
       job = Qyu::Job.find(params[:id])
       tasks_records = Qyu::Task.select(job_id: job.id)
       total_count = tasks_records.count
+      task_statuses = job.task_status_counts
       tasks = tasks_records.group_by(&:parent_task_id)
-      erb :show_job, layout: true, locals: { job: job, tasks: tasks, total_count: total_count }
+      erb :show_job,
+        layout: true,
+        locals: {
+          job: job,
+          tasks: tasks,
+          total_count: total_count,
+          task_statuses: task_statuses
+        }
     end
 
     private

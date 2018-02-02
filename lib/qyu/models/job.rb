@@ -127,6 +127,10 @@ module Qyu
       parent_task_ids
     end
 
+    def task_status_counts
+      Qyu.store.task_status_counts(id)
+    end
+
     def [](attribute)
       public_send(attribute)
     end

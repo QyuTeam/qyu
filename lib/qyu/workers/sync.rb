@@ -52,7 +52,7 @@ module Qyu
 
       def check_completion!(task_ids)
         task_ids.each do |task_id|
-          state = Qyu::Status.find(task_id)
+          state = Qyu::Status.new(task_id)
           log(:debug, "[CHECK_COMPLETION] Task ID: #{task_id}, Status: #{state.status}")
           next if state.completed?
           fail Qyu::Errors::UnsyncError

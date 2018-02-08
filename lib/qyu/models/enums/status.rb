@@ -9,7 +9,7 @@ module Qyu
     INVALID_PAYLOAD = 'invalid_payload'
 
     def self.find(id)
-      Qyu.store.find_task(@id)
+      Qyu.store.find_task(id)
     end
 
     def initialize(id)

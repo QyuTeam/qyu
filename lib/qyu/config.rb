@@ -7,14 +7,25 @@ module Qyu
 
     class ServiceConfig
       class << self
+        # Register a service (Queue/Store)
+        #
+        # @param adapter_class [Class] service Class to Register
+        # @return [Class] service Class to Register
         def register(adapter_class)
           types[adapter_class::TYPE] = adapter_class
         end
 
+        # Validate provided config
+        #
+        # @param config [Hash] configuration
+        # @return [Boolean]
         def valid?(config)
           types[config[:type]].valid_config?(config)
         end
 
+        # Get registered services
+        #
+        # @return [Hash] registereds services
         def types
           @__types ||= {}
         end

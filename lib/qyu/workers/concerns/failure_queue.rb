@@ -3,17 +3,24 @@
 module Qyu
   module Workers
     module Concerns
-      # Qyu::Concerns::FailureQueue
+      # Qyu::Workers::Concerns::FailureQueue
+      #
+      # Adds ability to workers enqueue failed task to another queue
+      #
+      # Qyu::Worker.new do
+      #   failure_queue true
+      #   # or
+      #   failure_queue false
+      # end
+      #
       module FailureQueue
-        # Adds ability to workers enqueue failed task to another queue
-        #
-        # Qyu::Worker.new do
-        #   failure_queue true
-        #   # or
-        #   failure_queue false
-        # end
-        #
 
+        # Configures failure queue
+        #
+        #   failure_queue false # default
+        #   failure_queue true
+        #
+        # @param [Boolean]
         def failure_queue(fq)
           @failure_queue = fq
         end

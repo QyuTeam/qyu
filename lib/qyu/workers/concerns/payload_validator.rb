@@ -3,26 +3,43 @@
 module Qyu
   module Workers
     module Concerns
-      # Qyu::Concerns::PayloadValidator
+      # Qyu::Workers::Concerns::PayloadValidator
+      #
+      # Adds ability to workers to perform validations on
+      # params for the task to be processed
+      #
+      # Usage:
+      #
+      # Qyu::Worker.new do
+      #   validates :user_id,    presence: true, type: :integer, unless: :no_user
+      #   validates :name,       presence: true, type: :string
+      #   validates :hotels,     presence: true, type: :array
+      #   validates :account_id, absence: true,  if: :customer_id
+      #   validates :account_id, presence: true, unless: :customer_id
+      # end
+      #
       module PayloadValidator
-        # Adds ability to workers to perform validations on
-        # params for the task to be processed
+        # Adds a validation option to worker
         #
-        # Usage:
-        #
-        # Qyu::Worker.new do
         #   validates :user_id,    presence: true, type: :integer, unless: :no_user
         #   validates :name,       presence: true, type: :string
         #   validates :account_id, absence: true,  if: :customer_id
         #   validates :account_id, presence: true, unless: :customer_id
-        # end
         #
-
+        # @param [Symbol] payload key to validate
+        # @param [Hash] options for validation
+        # @return [Hash] registereds services
         def validates(parameter, opts = {})
           @_validations ||= {}
           @_validations[parameter.to_s] = Qyu::Utils.stringify_hash_keys(opts)
         end
 
+        # Validates payload in processing task and raises a Qyu::Errors::PayloadValidationError
+        # if any of the conditions do not hold up
+        #
+        # @param [Task] task with payload
+        # @return [nil]
+        # @raise [Qyu::Errors::PayloadValidationError]
         def validate_payload!(model)
           return unless @_validations
           payload = Qyu::Utils.stringify_hash_keys(model.payload || {})
@@ -48,6 +65,7 @@ module Qyu
 
         private
 
+        # :nodoc:
         def run_validation(option, param, value)
           # Skip if and unless conditionals (return nil)
           return if option.eql?('if')

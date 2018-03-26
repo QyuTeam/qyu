@@ -2,6 +2,24 @@
 
 module Qyu
   module Workers
+    # Qyu::Workers::Base
+    # A Worker is sitting on a queue, waiting for something.
+    #     Qyu::Worker#work(queue_name)
+    #
+    # Worker lifecycle:
+    #   - Start an infinte loop:
+    #         while (true)
+    #   - Fetch a message (Task) from its queue:
+    #         t = Task.fetch(queue_name)
+    #   - Check the completion:
+    #         if t.completed? t.acknowledge_message
+    #   - Lock it:
+    #         t.lock! && t.mark_working
+    #   - Works: yield(t)
+    #   - Create the next steps/tasks:
+    #         t.job.create_next_tasks(t, t.job.payload (...))
+    #   - Finish:
+    #         t.unlock! && t.mark_finished && t.acknowledge_message
     class Base
       include Concerns::Callback
       include Concerns::PayloadValidator

@@ -3,6 +3,7 @@
 module Qyu
   module Store
     module Memory
+      # Qyu::Store::Memory::Adapter
       class Adapter < Qyu::Store::Base
         TYPE = :memory
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Qyu
+  # Qyu::Task
   # A Task represents a unit of work in a workflow.
   # Conceptually a Task:
   # - may not exist outside the context of a queue.

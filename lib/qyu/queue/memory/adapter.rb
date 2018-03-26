@@ -3,6 +3,7 @@
 module Qyu
   module Queue
     module Memory
+      # Qyu::Queue::Memory::Adapter
       class Adapter < Qyu::Queue::Base
         TYPE = :memory
 

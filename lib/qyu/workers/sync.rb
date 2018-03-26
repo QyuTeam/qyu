@@ -2,6 +2,7 @@
 
 module Qyu
   module Workers
+    # Qyu::Workers::Sync
     class Sync < Base
       def work(queue_name)
         super do |task|

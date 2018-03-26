@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Qyu
+  # Qyu::Workflow
   class Workflow
     attr_reader :id, :name, :descriptor, :created_at, :updated_at
 

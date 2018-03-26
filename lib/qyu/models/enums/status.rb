@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Qyu
+  # Qyu::Status
   class Status
     COMPLETED       = 'completed'
     QUEUED          = 'queued'

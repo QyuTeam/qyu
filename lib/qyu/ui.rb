@@ -3,7 +3,7 @@
 require 'sinatra'
 require 'qyu/ui/helpers/pagination'
 
-module Qyu
+module Qyu #:nodoc: all
   class UI < Sinatra::Base
     set :port, ENV['PORT'] || 3000
     set :host, ENV['HOST'] || '0.0.0.0'

@@ -39,7 +39,49 @@ Qyu.configure(
 ```
 
 ## Usage
-TODO: Write usage instructions here
+[1] Connect all instances to the same state store and message queue  
+[2] Create a workflow  
+[3] Initialize a worker as follows  
+
+```ruby
+w = Qyu::Worker.new do
+  # callbacks
+  callback :execute, :before do
+    Qyu.logger.info 'Waiting for task..'
+  end
+
+  callback :execute, :after do
+    Qyu.logger.info 'Done'
+  end
+
+  # payload validation
+  validates :times, presence: true, type: :integer
+
+  # failure queue
+  failure_queue false
+end
+
+w.work('queue-name') do |task|
+  # to get the payload passed to the task
+  task.payload
+  # = { 'param_1' => true, 'param_2': [10, 11, 12], 'param_3' => 2 }
+
+  # get the job
+  task.job
+
+  # to manually start a task
+  task.job.create_task(task, 'next-task-name', payload)
+rescue StandardError => ex
+  # If you rescue the error for debugging or reporting purposes, you have to raise it at the end
+  #
+  # do something
+  #
+  raise ex
+end
+```
+
+[4] Start worker  
+[5] Start creating Jobs using the previously created workflow
 
 ## Plugins
 The memory queue and store is just for testing purposes. For production; use one of the following:

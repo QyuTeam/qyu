@@ -3,6 +3,7 @@
 module Qyu
   module Helpers
     module Pagination
+      # Qyu::Helpers::Pagination::PaginatableArray
       class PaginatableArray < Array
         attr_accessor :limit, :offset, :total_count, :page
 

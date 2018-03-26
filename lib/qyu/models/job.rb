@@ -59,8 +59,8 @@ module Qyu
       descriptor['tasks'][task.name]['waits_for'].keys
     end
 
-    def sync_condition(task, task_name)
-      descriptor['tasks'][task.name]['waits_for'][task_name]['condition']
+    def sync_condition(task, next_task_name)
+      descriptor['tasks'][task.name]['waits_for'][next_task_name]['condition']
     end
 
     def create_task(parent_task, task_name, payload)

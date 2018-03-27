@@ -2,4 +2,7 @@ sudo: false
 language: ruby
 rvm:
   - 2.4.2
+env:
+  - CI=true
+  - CODECOV_TOKEN=c2463f9a-6760-4aa5-b042-749c83b1c389
 before_install: gem install bundler -v 1.16.0

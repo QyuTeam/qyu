@@ -3,10 +3,19 @@ require 'timecop'
 require 'pry'
 require 'pry-byebug'
 require 'simplecov'
+
 require 'qyu'
 
 Qyu.logger.level = Logger::FATAL
+
+## Coverage
 SimpleCov.start
+if ENV['CI'] == 'true'
+  require 'codecov'
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+end
+
+## Tests configuration
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"

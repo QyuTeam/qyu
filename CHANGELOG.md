@@ -4,10 +4,13 @@
 
 ---
 
-[Unreleased]: https://github.com/QyuTeam/qyu/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/QyuTeam/qyu/compare/v1.0.2...HEAD
 ## [Unreleased]
+
+[v1.0.2]: https://github.com/QyuTeam/qyu/compare/v1.0.1...v1.0.2
+## [v1.0.2]
 ### Added
-- CHANGELOG
+- Added first `CHANGELOG.md`
 - [TESTS] WorkflowDescriptorValidator tests
 
 ### Changed

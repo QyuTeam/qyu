@@ -110,6 +110,7 @@ module Qyu
           all_task_names = []
           all_task_names.concat(desc['starts'] || [])
           all_task_names.concat((desc['starts_with_params'] || {}).keys)
+          all_task_names.concat(desc['starts_parallel'] || [])
           all_task_names.concat(desc['starts_manually'] || [])
           all_task_names.include?(tasks_path[-1])
         end

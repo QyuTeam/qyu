@@ -10,7 +10,7 @@ RSpec.describe Qyu::Worker do
       'tasks' => {
         'build:campaign' => {
           'queue' => queue_name,
-          'starts_manually' => ['build:single:language'],
+          'starts_parallel' => ['build:single:language'],
         },
         'build:single:language' => {
           'queue' => 'build-language'

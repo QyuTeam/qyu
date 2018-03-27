@@ -15,7 +15,7 @@ module Qyu
 
         # Get registered services
         #
-        # @return [Hash] registereds services
+        # @return [Hash] registered services
         def types
           @__types ||= {}
         end

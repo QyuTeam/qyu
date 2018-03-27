@@ -6,6 +6,7 @@ module Qyu
     class Sync < Base
       def work(queue_name)
         super do |task|
+          yield(task) if block_given?
           job = task.job
           task_names_to_wait_for = job.tasks_to_wait_for(task)
           log(:debug, "Task names to wait for: #{task_names_to_wait_for}")

@@ -33,6 +33,17 @@ module Qyu
         def payload_key(var_name)
           @payload_key = var_name
         end
+
+        private
+        def validate_split_parameters!
+          if @payload_key.nil?
+            raise Qyu::Errors::MissingSplitParameters.new('payload_key')
+          end
+
+          if @slice_size.nil?
+            raise Qyu::Errors::MissingSplitParameters.new('slice_size')
+          end
+        end
       end
     end
   end

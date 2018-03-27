@@ -34,6 +34,15 @@ module Qyu
           @payload_key = var_name
         end
 
+        # Run with sampling a single element out of the array
+        #
+        #   sample true
+        #
+        # @param sample [Boolean]
+        def sample(smpl)
+          @sample = smpl
+        end
+
         private
         def validate_split_parameters!
           if @payload_key.nil?

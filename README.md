@@ -3,6 +3,7 @@
 [![Gem Version](https://img.shields.io/gem/v/qyu.svg)](https://rubygems.org/gems/qyu)
 [![Build Status](https://travis-ci.org/FindHotel/qyu.svg)](https://travis-ci.org/FindHotel/qyu)
 [![Maintainability](https://api.codeclimate.com/v1/badges/88b8e0a8621d1da5c237/maintainability)](https://codeclimate.com/github/QyuTeam/qyu/maintainability)
+[![codecov](https://codecov.io/gh/QyuTeam/qyu/branch/master/graph/badge.svg)](https://codecov.io/gh/QyuTeam/qyu)
 [![Press](https://img.shields.io/badge/RubyWeekly-Blog%20Post-green.svg)](https://rubyweekly.com/link/44495/web)
 
 ## Requirements:

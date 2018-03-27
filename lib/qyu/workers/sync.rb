@@ -6,7 +6,6 @@ module Qyu
     class Sync < Base
       def work(queue_name)
         super do |task|
-          yield(task) if block_given?
           job = task.job
           task_names_to_wait_for = job.tasks_to_wait_for(task)
           log(:debug, "Task names to wait for: #{task_names_to_wait_for}")
@@ -15,6 +14,8 @@ module Qyu
             log(:debug, "Task: #{task_name}, Sync condition: #{sync_condition}")
             if respond_to?(sync_condition['function'], true)
               __send__(sync_condition['function'], job, task, task_name, sync_condition['param'])
+              # execute attached sync block only if codition passes (i.e. No errors raised)
+              yield(task) if block_given?
             else
               fail Qyu::Errors::NotImplementedError
             end

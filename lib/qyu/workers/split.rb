@@ -30,6 +30,8 @@ module Qyu
       # worker.work('queue')
       # @param queue_name [String]
       def work(queue_name)
+        validate_split_parameters!
+
         super do |task|
           if block_given?
             @splittable = yield(task)

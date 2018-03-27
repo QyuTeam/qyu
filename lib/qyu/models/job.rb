@@ -3,7 +3,7 @@
 module Qyu
   # Qyu::Job
   class Job
-    attr_reader :descriptor, :payload, :id, :created_at, :updated_at
+    attr_reader :descriptor, :payload, :workflow, :id, :created_at, :updated_at
 
     def self.create(workflow:, payload:)
       workflow = Workflow.find_by(name: workflow) if workflow.is_a?(String)

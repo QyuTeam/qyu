@@ -171,8 +171,20 @@ module Qyu
       Qyu.queue.enqueue_task_to_failed_queue(queue_name, id)
     end
 
+    def workflow
+      job&.workflow
+    end
+
+    def workflow_descriptor
+      workflow&.descriptor
+    end
+
     def job
       @job ||= Qyu::Job.find(job_id)
+    end
+
+    def descriptor
+      workflow_descriptor ? workflow_descriptor['tasks'][name] : nil
     end
 
     def [](attribute)

@@ -44,7 +44,8 @@ module Qyu
 
           @splittable.each_slice(@slice_size).with_index do |slice, i|
             log(:debug, "Split started for queue '#{queue_name}'")
-            new_payload = task.payload.merge({ @payload_key => slice })
+            input = @sample ? slice.sample : slice
+            new_payload = task.payload.merge({ @payload_key => input })
             task_names_to_start = task.descriptor['starts_parallel'] || task.descriptor['starts_manually']
             task_names_to_start.each do |task_name_to_start|
               task.job.create_task(task, task_name_to_start, new_payload)

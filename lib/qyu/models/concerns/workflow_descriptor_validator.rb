@@ -12,6 +12,9 @@ module Qyu
         @errors = []
       end
 
+      # validates a workflow's descriptor
+      #
+      # @return [Boolean]
       def valid?
         validate
         @errors.empty?
@@ -28,19 +31,19 @@ module Qyu
 
         tasks.keys.each do |task_name|
           unless validate_queue_presence(task_name)
-            @errors << "#{task_name} must have a valid queue."
+            @errors << "#{task_name} must have a valid queue"
           end
           unless validate_task_keys(task_name)
-            @errors << "#{task_name} must only contain the following keys: #{ALLOWED_KEYS}."
+            @errors << "#{task_name} must only contain the following keys: #{ALLOWED_KEYS}"
           end
           unless validate_task_reference_formats(task_name)
-            @errors << "#{task_name} must follow the reference declaration format."
+            @errors << "#{task_name} must follow the reference declaration format"
           end
-          unless validate_task_references(task_name)
-            @errors << "#{task_name} must list existing tasks in its references."
+          unless validate_referenced_tasks(task_name)
+            @errors << "#{task_name} must list existing tasks in its references"
           end
           unless validate_sync_condition_params(task_name)
-            @errors << "#{task_name} must pass the correct parameters to the sync task."
+            @errors << "#{task_name} must pass the correct parameters to the sync task"
           end
         end
       rescue => ex
@@ -81,17 +84,17 @@ module Qyu
       end
 
       def validate_task_reference_formats(task_name)
-        (tasks[task_name]['starts'].nil? || tasks[task_name]['starts'].is_a?(Array)) &&
-          (tasks[task_name]['starts_manually'].nil? || tasks[task_name]['starts_manually'].is_a?(Array)) &&
-          (tasks[task_name]['starts_with_params'].nil? || tasks[task_name]['starts_with_params'].is_a?(Hash)) &&
-          (tasks[task_name]['waits_for'].nil? || tasks[task_name]['waits_for'].is_a?(Hash))
+        validate_format(task_name, 'starts', Array) &&
+        validate_format(task_name, 'starts_manually', Array) &&
+        validate_format(task_name, 'starts_with_params', Hash) &&
+        validate_format(task_name, 'waits_for', Hash)
       end
 
-      def validate_task_references(task_name)
-        (tasks[task_name]['starts'] || []).all? { |t_name| tasks[t_name].is_a?(Hash) } &&
-          (tasks[task_name]['starts_manually'] || []).all? { |t_name| tasks[t_name].is_a?(Hash) } &&
-          (tasks[task_name]['starts_with_params'] || {}).all? { |t_name, _| tasks[t_name].is_a?(Hash) } &&
-          (tasks[task_name]['waits_for'] || {}).all? { |t_name, _| tasks[t_name].is_a?(Hash) }
+      def validate_referenced_tasks(task_name)
+        validate_presence_of_reference_tasks(task_name, 'starts', Array) &&
+        validate_presence_of_reference_tasks(task_name, 'starts_manually', Array) &&
+        validate_presence_of_reference_tasks(task_name, 'starts_with_params', Hash) &&
+        validate_presence_of_reference_tasks(task_name, 'waits_for', Hash)
       end
 
       def validate_sync_condition_params(task_name)
@@ -103,6 +106,28 @@ module Qyu
             end
           end
         end
+      end
+
+      # checks whether a task reference key is present and in valid format
+      #
+      # @param task_name [String] name of task currently being validated
+      # @param reference_key [String] reference key to validate tasks in it
+      # @param klass [Class] class to validate against
+      # @return [Boolean]
+      def validate_format(task_name, reference_key, klass)
+        (tasks[task_name][reference_key].nil? || tasks[task_name][reference_key].is_a?(klass))
+      end
+
+      # validates that a task descriptor is present and is a Hash
+      #
+      # @param task_name [String] name of task currently being validated
+      # @param reference_key [String] reference key to validate tasks in it
+      # @param klass [Class] how this reference key is represented
+      # @return [Boolean]
+      def validate_presence_of_reference_tasks(task_name, reference_key, klass)
+        task_names = (tasks[task_name][reference_key] || klass.new)
+        task_names = task_names.keys if klass.eql?(Hash)
+        task_names.all? { |t_name| tasks[t_name].is_a?(Hash) }
       end
 
       def entry_points

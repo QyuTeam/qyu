@@ -8,7 +8,7 @@ module Qyu
     class << self
       def create(name:, descriptor:)
         validator = Qyu::Concerns::WorkflowDescriptorValidator.new(descriptor)
-        fail Qyu::Errors::WorkflowDescriptorValidatorationError, validator.errors unless validator.valid?
+        fail Qyu::Errors::WorkflowDescriptorValidationError, validator.errors unless validator.valid?
         id = persist(name, descriptor)
         time = Time.now
         new(id, name, descriptor, time, time)

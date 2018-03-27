@@ -2,11 +2,11 @@
 
 module Qyu
   module Errors
-    # Qyu::Errors::WorkflowDescriptorValidatorationError
-    class WorkflowDescriptorValidatorationError < Base
+    # Qyu::Errors::WorkflowDescriptorValidationError
+    class WorkflowDescriptorValidationError < Base
       attr_reader :validation_errors
       def initialize(validation_errors)
-        super('Invalid Job descriptor.')
+        super("invalid workflow descriptor: #{validation_errors.join(', ')}")
         @validation_errors = validation_errors
       end
     end

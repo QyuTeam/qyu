@@ -83,15 +83,15 @@ module Qyu
       def validate_task_reference_formats(task_name)
         (tasks[task_name]['starts'].nil? || tasks[task_name]['starts'].is_a?(Array)) &&
           (tasks[task_name]['starts_manually'].nil? || tasks[task_name]['starts_manually'].is_a?(Array)) &&
-          (tasks[task_name]['starts_with_params'].nil? || tasks[task_name]['starts_with_params'].is_a?(Hash))
-        (tasks[task_name]['waits_for'].nil? || tasks[task_name]['waits_for'].is_a?(Hash))
+          (tasks[task_name]['starts_with_params'].nil? || tasks[task_name]['starts_with_params'].is_a?(Hash)) &&
+          (tasks[task_name]['waits_for'].nil? || tasks[task_name]['waits_for'].is_a?(Hash))
       end
 
       def validate_task_references(task_name)
         (tasks[task_name]['starts'] || []).all? { |t_name| tasks[t_name].is_a?(Hash) } &&
           (tasks[task_name]['starts_manually'] || []).all? { |t_name| tasks[t_name].is_a?(Hash) } &&
-          (tasks[task_name]['starts_with_params'] || {}).all? { |t_name, _| tasks[t_name].is_a?(Hash) }
-        (tasks[task_name]['waits_for'] || {}).all? { |t_name, _| tasks[t_name].is_a?(Hash) }
+          (tasks[task_name]['starts_with_params'] || {}).all? { |t_name, _| tasks[t_name].is_a?(Hash) } &&
+          (tasks[task_name]['waits_for'] || {}).all? { |t_name, _| tasks[t_name].is_a?(Hash) }
       end
 
       def validate_sync_condition_params(task_name)

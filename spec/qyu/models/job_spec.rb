@@ -5,15 +5,15 @@ RSpec.shared_examples 'job' do
   let(:descriptor) do
     {
       'starts' => [
-        'variation_generation'
+        'variation:generation'
       ],
       'tasks' => {
-        'variation_generation' => {
-          'queue' => 'var_gen',
-          'starts' => ['variation_scraping']
+        'variation:generation' => {
+          'queue' => 'variation-generation',
+          'starts' => ['variation:sanitization']
         },
-        'variation_scraping' => {
-          'queue' => 'var_scr'
+        'variation:sanitization' => {
+          'queue' => 'variation-sanitization'
         }
       }
     }
@@ -74,13 +74,13 @@ RSpec.shared_examples 'job' do
     # given
     let(:descriptor) do
       {
-        'starts' => %w(variation_generation control_sample_generation),
+        'starts' => %w(variation:generation control:sample:generation),
         'tasks' => {
-          'variation_generation' => {
-            'queue' => 'something something'
+          'variation:generation' => {
+            'queue' => 'variation'
           },
-          'control_sample_generation' => {
-            'queue' => 'something something'
+          'control:sample:generation' => {
+            'queue' => 'control-sample'
           }
         }
       }
@@ -91,8 +91,8 @@ RSpec.shared_examples 'job' do
 
     # expect
     it 'calls #create_task on each of the starting tasks retrieved from the descriptor' do
-      expect(job).to receive(:create_task).once.with(nil, 'variation_generation', payload)
-      expect(job).to receive(:create_task).once.with(nil, 'control_sample_generation', payload)
+      expect(job).to receive(:create_task).once.with(nil, 'variation:generation', payload)
+      expect(job).to receive(:create_task).once.with(nil, 'control:sample:generation', payload)
     end
 
     # when
@@ -266,6 +266,12 @@ RSpec.shared_examples 'job' do
             task_name => {
               'queue' => 'something',
               'starts' => starts
+            },
+            'subsequent_unrelated_task_1' => {
+              'queue' => 's1'
+            },
+            'subsequent_unrelated_task_2' => {
+              'queue' => 's2'
             }
           }
         }

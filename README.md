@@ -62,6 +62,9 @@ w = Qyu::Worker.new do
 
   # failure queue
   failure_queue false
+
+  # timeout in seconds for each task processed by the worker
+  timeout 120
 end
 
 w.work('queue-name') do |task|

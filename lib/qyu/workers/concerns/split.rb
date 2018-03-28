@@ -52,6 +52,10 @@ module Qyu
           if @slice_size.nil?
             raise Qyu::Errors::MissingSplitParameters.new('slice_size')
           end
+
+          if @slice_size.zero?
+            raise Qyu::Errors::InvalidWorkerConfigurationValue.new('slice_size', 0)
+          end
         end
       end
     end

@@ -9,6 +9,7 @@
 ### Added
 - [FEATURE] `Qyu::SplitWorker` to simplify splitting and parallelization of input
 - [FEATURE] `Qyu::SyncWorker` can now execute passed blocks if all synced tasks are successful
+- [FEATURE] Introduced a `timeout` option for `Qyu::Worker` adding a timeout for each processing task
 - [METHOD] `Qyu::Job#workflow`
 - [METHOD] `Qyu::Task#descriptor`, `Qyu::Task#workflow_descriptor` and `Qyu::Task#workflow`
 

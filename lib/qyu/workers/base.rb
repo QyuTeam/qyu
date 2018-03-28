@@ -22,8 +22,9 @@ module Qyu
     #         t.unlock! && t.mark_finished && t.acknowledge_message
     class Base
       include Concerns::Callback
-      include Concerns::PayloadValidator
       include Concerns::FailureQueue
+      include Concerns::PayloadValidator
+      include Concerns::Timeout
 
       attr_reader :id
       attr_accessor :processed_tasks
@@ -51,7 +52,9 @@ module Qyu
               elsif fetched_task.lock!
                 fetched_task.mark_working
                 begin
-                  yield(fetched_task)
+                  Timeout::timeout(@timeout) do
+                    yield(fetched_task)
+                  end
                   conclude_task(fetched_task)
                 rescue => ex
                   fail_task(fetched_task, ex)

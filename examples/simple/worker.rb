@@ -13,6 +13,9 @@ class SimpleWorker
         Qyu.logger.info 'Done'
       end
 
+      # Timeout
+      timeout 120
+
       # Payload validation
       validates :times, presence: true, type: :integer
 

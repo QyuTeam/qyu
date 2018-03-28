@@ -5,6 +5,14 @@ module Qyu
   class Workflow
     attr_reader :id, :name, :descriptor, :created_at, :updated_at
 
+    def initialize(id, name, descriptor, created_at = nil, updated_at = nil)
+      @id = id
+      @name = name
+      @descriptor = descriptor
+      @created_at = created_at
+      @updated_at = updated_at
+    end
+
     class << self
       def create(name:, descriptor:)
         validator = Qyu::Concerns::WorkflowDescriptorValidator.new(descriptor)
@@ -69,18 +77,6 @@ module Qyu
 
     def [](attribute)
       public_send(attribute)
-    end
-
-    private_class_method :new
-
-    private
-
-    def initialize(id, name, descriptor, created_at = nil, updated_at = nil)
-      @id = id
-      @name = name
-      @descriptor = descriptor
-      @created_at = created_at
-      @updated_at = updated_at
     end
   end
 end

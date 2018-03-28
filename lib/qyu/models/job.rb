@@ -142,7 +142,7 @@ module Qyu
     private
 
     def initialize(id, workflow, payload, created_at = nil, updated_at = nil)
-      @workflow = workflow
+      @workflow = Qyu::Workflow.new(workflow['id'], workflow['name'], workflow['descriptor'])
       @descriptor = @workflow['descriptor']
       @payload = payload
       @id = id

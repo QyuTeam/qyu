@@ -3,8 +3,8 @@
 require_relative '../../config'
 
 class SplitArrayWorkerWithBlock
-  def initialize
-    @worker = Qyu::SplitWorker.new do
+  def run
+    Qyu::SplitWorker.new do
       callback :execute, :before do
         Qyu.logger.info 'Waiting for task..'
       end
@@ -21,28 +21,26 @@ class SplitArrayWorkerWithBlock
 
       # Variable name with array to create new payload with
       payload_key 'array'
-    end
-  end
 
-  def run
-    # Consumes message from split-array queue
-    @worker.work('split-array') do |task|
-      # For example
-      # Can get something from database
-      # or preprocess data etc..
-      @splittable = []
-      @splittable.push(10)
-      @splittable.push(9)
-      @splittable.push(8)
-      @splittable.push(7)
-      @splittable.push(6)
-      @splittable.push(5)
-      @splittable.push(4)
-      @splittable.push(3)
-      @splittable.push(2)
-      @splittable.push(1)
-      @splittable.delete_if { |x| x < 3 }
-      @splittable
+      # Consumes messages from split-array queue
+      work('split-array') do |task|
+        # For example
+        # Can get something from database
+        # or preprocess data etc..
+        @splittable = []
+        @splittable.push(10)
+        @splittable.push(9)
+        @splittable.push(8)
+        @splittable.push(7)
+        @splittable.push(6)
+        @splittable.push(5)
+        @splittable.push(4)
+        @splittable.push(3)
+        @splittable.push(2)
+        @splittable.push(1)
+        @splittable.delete_if { |x| x < 3 }
+        @splittable
+      end
     end
   end
 end

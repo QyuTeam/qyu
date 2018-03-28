@@ -3,8 +3,8 @@
 require_relative '../../config'
 
 class PrintWorker
-  def initialize
-    @worker = Qyu::Worker.new do
+  def run
+    Qyu::Worker.new do
       callback :execute, :before do
         Qyu.logger.info 'Waiting for task..'
       end
@@ -15,16 +15,14 @@ class PrintWorker
 
       # Payload validation
       validates :array, presence: true, type: :array
-    end
-  end
 
-  def run
-    # Consumes message from split-array queue
-    @worker.work('print-array') do |task|
-      arr = task.payload['array']
-      Qyu.logger.debug "[Task##{task.id}] received array: #{arr}"
-      arr.each.with_index do |element, index|
-        Qyu.logger.info "[Task##{task.id}] #{index + 1}. #{element}"
+      # Consumes messages from split-array queue and executes a block of code
+      work('print-array') do |task|
+        arr = task.payload['array']
+        Qyu.logger.debug "[Task##{task.id}] received array: #{arr}"
+        arr.each.with_index do |element, index|
+          Qyu.logger.info "[Task##{task.id}] #{index + 1}. #{element}"
+        end
       end
     end
   end

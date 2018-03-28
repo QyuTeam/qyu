@@ -3,8 +3,8 @@
 require_relative '../../config'
 
 class SplitArrayWorker
-  def initialize
-    @worker = Qyu::SplitWorker.new do
+  def run
+    Qyu::SplitWorker.new do
       callback :execute, :before do
         Qyu.logger.info 'Waiting for task..'
       end
@@ -19,13 +19,11 @@ class SplitArrayWorker
       # Slice size
       slice_size 3
 
-      # Variable name with array to split
+      # Variable name with array to create new payload with
       payload_key 'array'
-    end
-  end
 
-  def run
-    # Consumes message from split-array queue
-    @worker.work('split-array')
+      # Consumes messages from split-array queue
+      work 'split-array'
+    end
   end
 end

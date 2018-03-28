@@ -35,7 +35,7 @@ module Qyu
       end
 
       def work(queue_name, blocking: true)
-        log(:info, "Worker started for queue '#{queue_name}'")
+        log(:info, "worker started for queue '#{queue_name}'")
         repeat = true
 
         remaining_fetch_retries = 3
@@ -45,7 +45,7 @@ module Qyu
             begin
               fetched_task = fetch_task(queue_name)
               validate_payload!(fetched_task)
-              log(:info, "Worker processed #{processed_tasks} tasks from queue `#{queue_name}`")
+              log(:info, "worker processed #{processed_tasks} tasks from queue `#{queue_name}`")
               if fetched_task.acknowledgeable?
                 discard_completed_task(fetched_task)
               elsif fetched_task.lock!
@@ -66,11 +66,12 @@ module Qyu
                 remaining_fetch_retries -= 1
                 retry
               end
-            rescue Qyu::Errors::PayloadValidationError
+            rescue Qyu::Errors::PayloadValidationError => ex
+              log("invalid payload: #{ex.class}: #{ex.message}")
               fetched_task.mark_invalid_payload
             rescue => ex
-              log("Worker error: #{ex.class}: #{ex.message}")
-              log("Backtrace: #{ex.backtrace.join("\n")}")
+              log("worker error: #{ex.class}: #{ex.message}")
+              log("backtrace: #{ex.backtrace.join("\n")}")
             end
           end
 
@@ -88,13 +89,13 @@ module Qyu
       end
 
       def discard_completed_task(fetched_task)
-        log(:debug, 'Fetched completed task. Discarding...')
+        log(:debug, 'fetched completed task and discarding it...')
         fetched_task.acknowledge_message
       end
 
       def conclude_task(fetched_task)
         Qyu.store.transaction do
-          log(:debug, 'Task finished. Creating next tasks.')
+          log(:debug, 'task finished and creating next tasks.')
           fetched_task.job.create_next_tasks(
             fetched_task,
             fetched_task.job.payload.merge(fetched_task.payload)
@@ -107,8 +108,8 @@ module Qyu
 
       def fail_task(fetched_task, exception)
         unless exception.class == Qyu::Errors::UnsyncError
-          log("Worker error: #{exception.class}: #{exception.message}")
-          log("Backtrace: #{exception.backtrace.join("\n")}")
+          log("worker error: #{exception.class}: #{exception.message}")
+          log("backtrace: #{exception.backtrace.join("\n")}")
         end
         Qyu.store.transaction do
           fetched_task.enqueue_in_failure_queue if @failure_queue
@@ -120,10 +121,10 @@ module Qyu
       def acknowledge_message_with_task_id_not_found_in_store(exception)
         # If a task is not found in the Store then there is no point attempting
         # to fetch the message over and over again.
-        log("Worker error: #{exception.class}: #{exception.message}")
-        log("Backtrace: #{exception.backtrace.join("\n")}")
-        log("Original error: #{exception.original_error.class}: #{exception.original_error.message}")
-        log("Backtrace: #{exception.original_error.backtrace.join("\n")}")
+        log("worker error: #{exception.class}: #{exception.message}")
+        log("backtrace: #{exception.backtrace.join("\n")}")
+        log("original error: #{exception.original_error.class}: #{exception.original_error.message}")
+        log("backtrace: #{exception.original_error.backtrace.join("\n")}")
         if exception.original_error.class == Qyu::Errors::TaskNotFound &&
            exception.queue_name &&
            exception.message_id
@@ -136,7 +137,7 @@ module Qyu
       end
 
       def run_garbage_collector
-        log(:debug, 'Running garbage collector')
+        log(:debug, 'running garbage collector')
         GC.start
       end
     end

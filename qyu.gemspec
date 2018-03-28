@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary               = 'Distributed task execution system for complex workflows'
   spec.description           = 'Distributed task execution system for complex workflows'
-  spec.homepage              = 'https://github.com/FindHotel/qyu'
+  spec.homepage              = 'https://github.com/QyuTeam/qyu'
   spec.required_ruby_version = '>= 2.4'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

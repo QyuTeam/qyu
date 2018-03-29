@@ -4,8 +4,13 @@
 
 ---
 
-[Unreleased]: https://github.com/QyuTeam/qyu/compare/v1.0.2...HEAD
-## [Unreleased]
+[UNRELEASED]: https://github.com/QyuTeam/qyu/compare/v1.1.0...HEAD
+## [UNRELEASED]
+### Added
+-
+
+[v1.1.0]: https://github.com/QyuTeam/qyu/compare/v1.0.2...v1.1.0
+## [v1.1.0] March 29, 2018
 ### Added
 - [FEATURE] `Qyu::SplitWorker` to simplify splitting and parallelization of input
 - [FEATURE] `Qyu::SyncWorker` can now execute passed blocks if all synced tasks are successful
@@ -17,7 +22,7 @@
 - [DEPRECATION] `starts_parallel` is now favored over `starts_manually`
 
 [v1.0.2]: https://github.com/QyuTeam/qyu/compare/v1.0.1...v1.0.2
-## [v1.0.2]
+## [v1.0.2] - March 27, 2018
 ### Added
 - Added first `CHANGELOG.md`
 - [TESTS] WorkflowDescriptorValidator tests

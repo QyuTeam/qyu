@@ -29,7 +29,7 @@ module Qyu
       # to worker initializer then just
       # worker.work('queue')
       # @param queue_name [String]
-      def work(queue_name)
+      def work(queue_name, blocking: true)
         validate_split_parameters!
 
         super do |task|

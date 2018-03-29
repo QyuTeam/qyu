@@ -4,7 +4,7 @@ module Qyu
   module Workers
     # Qyu::Workers::Sync
     class Sync < Base
-      def work(queue_name)
+      def work(queue_name, blocking: true)
         super do |task|
           job = task.job
           task_names_to_wait_for = job.tasks_to_wait_for(task)

@@ -494,7 +494,7 @@ RSpec.shared_examples 'job' do
         'tasks' => {
           'build:campaign' => {
             'queue' => 'build-campaign',
-            'starts_manually' => ['build:entity:cache'],
+            'starts_parallel' => ['build:entity:cache'],
             'starts_with_params' => {
               'build:language:collect' => {
                 'nr_tasks' => {
@@ -509,7 +509,7 @@ RSpec.shared_examples 'job' do
           },
           'build:slice:input' => {
             'queue' => 'build-slice-input',
-            'starts_manually' => ['build:ads'],
+            'starts_parallel' => ['build:ads'],
             'starts_with_params' => {
               'build:collect' => {
                 'nr_tasks' => {
@@ -622,7 +622,7 @@ RSpec.shared_examples 'job' do
         'tasks' => {
           'build:campaign' => {
             'queue' => 'build-campaign',
-            'starts_manually' => ['build:entity:cache'],
+            'starts_parallel' => ['build:entity:cache'],
             'starts_with_params' => {
               'build:language:collect' => {
                 'nr_tasks' => {
@@ -637,7 +637,7 @@ RSpec.shared_examples 'job' do
           },
           'build:slice:input' => {
             'queue' => 'build-slice-input',
-            'starts_manually' => ['build:ads'],
+            'starts_parallel' => ['build:ads'],
             'starts_with_params' => {
               'build:collect' => {
                 'nr_tasks' => {

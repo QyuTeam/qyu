@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require_relative '../split_n_sync/create_workflow'
+require_relative '../split_n_sync/enqueue_job'
+require_relative '../split_n_sync/workers/print_worker'
+require_relative '../split_n_sync/workers/split_array_worker_with_block'
+require_relative '../split_n_sync/workers/sync_worker'
+
+threads = []
+threads.push(Thread.new { SplitArrayWorkerWithBlock.new.run })
+threads.push(Thread.new { PrintWorker.new.run })
+threads.push(Thread.new { SyncWorker.new.run })
+threads.map(&:join)

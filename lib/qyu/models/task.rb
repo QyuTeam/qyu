@@ -171,8 +171,32 @@ module Qyu
       Qyu.queue.enqueue_task_to_failed_queue(queue_name, id)
     end
 
+    # Returns workflow specified in parent job
+    #
+    # @return [Qyu::Workflow] full workflow
+    def workflow
+      job.workflow
+    end
+
+    # Returns workflow descriptor from parent job
+    #
+    # @return [Hash] workflow descriptor
+    def workflow_descriptor
+      job.descriptor
+    end
+
+    # Returns parent job
+    #
+    # @return [Qyu::Job] parent job
     def job
       @job ||= Qyu::Job.find(job_id)
+    end
+
+    # Returns task descriptor
+    #
+    # @return [Hash] task descriptor
+    def descriptor
+      workflow_descriptor['tasks'][name]
     end
 
     def [](attribute)

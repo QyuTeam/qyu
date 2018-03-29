@@ -99,6 +99,26 @@ RSpec.shared_examples 'task' do
     end
   end
 
+  describe '#descriptor' do
+    let(:descriptor) do
+      { 'starts' => ['task'], 'tasks' => { 'task' => { 'queue' => 'something' } } }
+    end
+    let(:queue_name) { 'my_queue' }
+    let(:workflow) { Qyu::Workflow.create(name: 'sample-workflow', descriptor: descriptor) }
+    let(:job) { Qyu::Job.create(workflow: workflow, payload: {}) }
+    let(:task_attributes) do
+      {
+        'name' => 'task',
+        'job_id' => job.id
+      }
+    end
+
+    it 'returns specific task descriptor' do
+      expect(Qyu::Task.create(queue_name: queue_name, attributes: task_attributes).descriptor).
+        to eq({ 'queue' => 'something' })
+    end
+  end
+
   describe 'lock!' do
     let(:queue_name) { 'my_queue' }
     let(:attributes) { { 'payload' => { 'test' => true } } }

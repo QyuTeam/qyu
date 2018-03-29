@@ -1,8 +1,9 @@
 # Qyu 九
 
 [![Gem Version](https://img.shields.io/gem/v/qyu.svg)](https://rubygems.org/gems/qyu)
-[![Build Status](https://travis-ci.org/FindHotel/qyu.svg)](https://travis-ci.org/FindHotel/qyu)
+[![Build Status](https://travis-ci.org/QyuTeam/qyu.svg)](https://travis-ci.org/QyuTeam/qyu)
 [![Maintainability](https://api.codeclimate.com/v1/badges/88b8e0a8621d1da5c237/maintainability)](https://codeclimate.com/github/QyuTeam/qyu/maintainability)
+[![codecov](https://codecov.io/gh/QyuTeam/qyu/branch/master/graph/badge.svg)](https://codecov.io/gh/QyuTeam/qyu)
 [![Press](https://img.shields.io/badge/RubyWeekly-Blog%20Post-green.svg)](https://rubyweekly.com/link/44495/web)
 
 ## Requirements:
@@ -61,6 +62,9 @@ w = Qyu::Worker.new do
 
   # failure queue
   failure_queue false
+
+  # timeout in seconds for each task processed by the worker
+  timeout 120
 end
 
 w.work('queue-name') do |task|
@@ -89,12 +93,12 @@ end
 The memory queue and store is just for testing purposes. For production; use one of the following:
 
 #### Stores
-*ActiveRecord:* https://github.com/FindHotel/qyu-store-activerecord    
-*Redis:* https://github.com/FindHotel/qyu-store-redis
+*ActiveRecord:* https://github.com/QyuTeam/qyu-store-activerecord    
+*Redis:* https://github.com/QyuTeam/qyu-store-redis
 
 #### Queues
-*Amazon SQS:* https://github.com/FindHotel/qyu-queue-sqs    
-*Redis:* https://github.com/FindHotel/qyu-queue-redis
+*Amazon SQS:* https://github.com/QyuTeam/qyu-queue-sqs    
+*Redis:* https://github.com/QyuTeam/qyu-queue-redis
 
 ## Glossary
 

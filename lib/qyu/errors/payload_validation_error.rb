@@ -5,7 +5,7 @@ module Qyu
     # Qyu::Errors::PayloadValidationError
     class PayloadValidationError < Base
       def initialize(validation_errors_hash)
-        super("Validation failed for payload fields: #{validation_errors_hash}.")
+        super("validation failed for payload fields: #{validation_errors_hash}.")
       end
     end
   end

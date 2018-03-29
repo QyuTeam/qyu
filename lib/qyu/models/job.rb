@@ -3,8 +3,15 @@
 module Qyu
   # Qyu::Job
   class Job
-    attr_reader :descriptor, :payload, :id, :created_at, :updated_at
+    attr_reader :descriptor, :payload, :workflow, :id, :created_at, :updated_at
 
+    ## Class Methods
+
+    # Creates a new job via a workflow name / object and a payload
+    #
+    # @param [String, Qyu::Workflow] workflow to run
+    # @param [Hash] payload
+    # @return [Qyu::Job]
     def self.create(workflow:, payload:)
       workflow = Workflow.find_by(name: workflow) if workflow.is_a?(String)
       id = persist(workflow, payload)
@@ -12,10 +19,15 @@ module Qyu
       new(id, workflow, payload, time, time)
     end
 
+    # Finds Job by ID. Returns `nil` if job is not present in store
+    #
+    # @return [Qyu::Job, nil]
     def self.find(id)
       job_attrs = Qyu.store.find_job(id)
-      new(id, job_attrs['workflow'], job_attrs['payload'],
-          job_attrs['created_at'], job_attrs['updated_at'])
+      if job_attrs
+        new(id, job_attrs['workflow'], job_attrs['payload'],
+            job_attrs['created_at'], job_attrs['updated_at'])
+      end
     end
 
     def self.select(limit: 30, offset: 0, order: :asc)
@@ -26,18 +38,34 @@ module Qyu
       end
     end
 
+    # Counts job in state store
+    #
+    # @return [Integer] jobs count
     def self.count
       Qyu.store.count_jobs
     end
 
+    # Deletes job from state store by ID
+    #
+    # @param [Object] id
+    # @return [Object] deleted job
     def self.delete(id)
       Qyu.store.delete_job(id)
     end
 
+    # Clears completed jobs
+    #
+    # @return [Integer] cleared jobs count
     def self.clear_completed
       Qyu.store.clear_completed_jobs
     end
 
+    ## Instance Methods
+
+    # Starts job execution
+    # Enqueues all tasks scheduled to start at the beginning (`starts` key in workflow descriptor)
+    #
+    # #=> job.start
     def start
       descriptor['starts'].each do |task_name|
         create_task(nil, task_name, payload)
@@ -59,8 +87,8 @@ module Qyu
       descriptor['tasks'][task.name]['waits_for'].keys
     end
 
-    def sync_condition(task, task_name)
-      descriptor['tasks'][task.name]['waits_for'][task_name]['condition']
+    def sync_condition(task, next_task_name)
+      descriptor['tasks'][task.name]['waits_for'][next_task_name]['condition']
     end
 
     def create_task(parent_task, task_name, payload)
@@ -110,6 +138,7 @@ module Qyu
           all_task_names = []
           all_task_names.concat(desc['starts'] || [])
           all_task_names.concat((desc['starts_with_params'] || {}).keys)
+          all_task_names.concat(desc['starts_parallel'] || [])
           all_task_names.concat(desc['starts_manually'] || [])
           all_task_names.include?(tasks_path[-1])
         end
@@ -141,7 +170,7 @@ module Qyu
     private
 
     def initialize(id, workflow, payload, created_at = nil, updated_at = nil)
-      @workflow = workflow
+      @workflow = Qyu::Workflow.new(workflow['id'], workflow['name'], workflow['descriptor'])
       @descriptor = @workflow['descriptor']
       @payload = payload
       @id = id

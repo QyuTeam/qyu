@@ -36,7 +36,7 @@ RSpec.describe Qyu::Concerns::WorkflowDescriptorValidator do
           'tasks' => {
             'split:array' => {
               'queue' => 'split-array',
-              'starts_manually' => ['print:array'],
+              'starts_parallel' => ['print:array'],
               'starts_with_params' => {
                 'report:success' => {
                   'nr_tasks' => {

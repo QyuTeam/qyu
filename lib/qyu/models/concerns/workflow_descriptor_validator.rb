@@ -4,7 +4,10 @@ module Qyu
   module Concerns
     # Qyu::Concerns::WorkflowDescriptorValidator
     class WorkflowDescriptorValidator
-      ALLOWED_KEYS = %w(queue waits_for starts starts_manually starts_with_params).freeze
+      # TODO: starts_parallel is a the same as starts_manually. The latter will be removed in Qyu v2
+      ALLOWED_KEYS = %w(queue waits_for starts starts_parallel starts_manually starts_with_params).freeze
+      DEPRECATED_KEYS = %(starts_manually)
+
       attr_reader :errors
 
       def initialize(descriptor)
@@ -85,6 +88,7 @@ module Qyu
 
       def validate_task_reference_formats(task_name)
         validate_format(task_name, 'starts', Array) &&
+        validate_format(task_name, 'starts_parallel', Array) &&
         validate_format(task_name, 'starts_manually', Array) &&
         validate_format(task_name, 'starts_with_params', Hash) &&
         validate_format(task_name, 'waits_for', Hash)
@@ -92,6 +96,7 @@ module Qyu
 
       def validate_referenced_tasks(task_name)
         validate_presence_of_reference_tasks(task_name, 'starts', Array) &&
+        validate_presence_of_reference_tasks(task_name, 'starts_parallel', Array) &&
         validate_presence_of_reference_tasks(task_name, 'starts_manually', Array) &&
         validate_presence_of_reference_tasks(task_name, 'starts_with_params', Hash) &&
         validate_presence_of_reference_tasks(task_name, 'waits_for', Hash)
